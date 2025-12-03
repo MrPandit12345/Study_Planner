@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const Login: React.FC = () => {
-  const router = useRouter();
-  const [identifier, setIdentifier] = useState(""); 
+ const router = useRouter();
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +14,7 @@ const Login: React.FC = () => {
 
   const validate = () => {
     if (!identifier.trim()) {
-      setError("Please enter your email or username.");
+      setError("Please enter your email.");
       return false;
     }
     if (!password) {
@@ -27,26 +28,36 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+
     setLoading(true);
     setError(null);
 
     try {
-      // Example: POST to your backend auth route (update the URL to match your API)
-      // const res = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ identifier, password, remember }),
-      // })
-      // const data = await res.json()
-      // if (!res.ok) throw new Error(data.message || 'Login failed')
+      const res = await fetch("http://localhost:5173/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: identifier,
+          password,
+        }),
+      });
 
-      // For now, we'll simulate a successful login
-      await new Promise((resolve) => setTimeout(resolve, 700));
-      // On success, redirect to a secure page (update as needed)
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Login failed");
+        setLoading(false);
+        return;
+      }
+
+      Cookies.set("token", data.token, {
+        expires: remember ? 7 : 1, 
+      });
+
       router.push("/dashboard");
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err);
-      setError(message || "Login failed — please try again");
+    } catch (err) {
+      setError("Network error — try again");
+      console.error("Login error:", err);
     } finally {
       setLoading(false);
     }
