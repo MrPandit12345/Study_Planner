@@ -5,20 +5,29 @@ import { AiOutlineClockCircle } from "react-icons/ai";
 import { BsGraphUpArrow } from "react-icons/bs";
 import Schedule from "../../_component/Schedule";
 
-export default function PlannerPage() {
+async function thought() {
+  const res = await fetch("https://zenquotes.io/api/quotes/random", {
+    cache: "no-store",
+  });
+  return res.json();
+}
+
+    
+export default async function PlannerPage() {
+  const { q, a } = await thought();
   return (
     <div className="p-6">
       <h1 className="text-4xl font-semibold text-gray-800">
         Good Morning,Vishal 👋
       </h1>
-    <p className="text-gray-500 mt-4 font-normal">
-      {new Date().toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })}
-    </p>
+      <p className="text-gray-500 mt-4 font-normal">
+        {new Date().toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </p>
 
       <div className="mt-8 grid grid-cols-3 gap-6">
         <ProgressCard
@@ -49,7 +58,10 @@ export default function PlannerPage() {
 
         <div />
       </div>
-        <Schedule />
+      <Schedule />
+      <div className="mt-8 p-4 border border-amber-300 bg-amber-200 rounded-lg">
+        {q}-{a}
+      </div>
     </div>
   );
 }

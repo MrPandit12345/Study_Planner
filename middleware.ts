@@ -6,6 +6,7 @@ const SECRET = process.env.NEXT_PUBLIC_JWT_SECRET!;
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
+  console.warn("Your token is:", token);
 
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url));
@@ -20,5 +21,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/profile/:path*"],
+  matcher: ["/", "/dashboard/:path*", "/profile/:path*"],
 };

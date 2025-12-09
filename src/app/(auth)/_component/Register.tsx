@@ -9,7 +9,6 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-//   const [acceptTerms, setAcceptTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -35,10 +34,6 @@ const Register: React.FC = () => {
       setError("Passwords do not match.");
       return false;
     }
-    // if (!acceptTerms) {
-    //   setError("Please accept the terms and conditions.");
-    //   return false;
-    // }
 
     setError(null);
     return true;
@@ -75,10 +70,10 @@ const Register: React.FC = () => {
         expires: 3, 
       });
 
-      router.push("/dashboard");
+      router.push("/login");
     } catch (err) {
       setError("Network error — try again");
-      console.error("Registration error:", err);
+      console.warn("Registration error:", err);
     } finally {
       setLoading(false);
     }
@@ -165,19 +160,6 @@ const Register: React.FC = () => {
               placeholder="Repeat your password"
             />
           </div>
-
-          {/* Terms */}
-          {/* <div className="flex items-center">
-            <label className="flex items-center text-sm text-white/80">
-              <input
-                type="checkbox"
-                checked={acceptTerms}
-                onChange={(e) => setAcceptTerms(e.target.checked)}
-                className="h-4 w-4 text-indigo-600 border-white/30 rounded"
-              />
-              <span className="ml-2">I agree to the terms and conditions</span>
-            </label>
-          </div> */}
 
           <button
             type="submit"
