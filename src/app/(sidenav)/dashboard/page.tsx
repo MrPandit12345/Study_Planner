@@ -5,16 +5,14 @@ import { AiOutlineClockCircle } from "react-icons/ai";
 import { BsGraphUpArrow } from "react-icons/bs";
 import Schedule from "../../_component/Schedule";
 
-async function thought() {
-  const res = await fetch("https://zenquotes.io/api/quotes/random", {
-    cache: "no-store",
-  });
-  return res.json();
-}
+const thought: string[] = [
+  "The only way to do great work is to love what you do.",
+  "Innovation distinguishes between a leader and a follower.",
+  "Stay hungry, stay foolish.",
+];
 
-    
 export default async function PlannerPage() {
-  const { q, a } = await thought();
+  const randomThought = thought[new Date().getDate() % thought.length];
   return (
     <div className="p-6">
       <h1 className="text-4xl font-semibold text-gray-800">
@@ -59,8 +57,8 @@ export default async function PlannerPage() {
         <div />
       </div>
       <Schedule />
-      <div className="mt-8 p-4 border border-amber-300 bg-amber-200 rounded-lg">
-        {q}-{a}
+      <div className="mt-8 p-4 border border-amber-300 bg-amber-200 rounded-lg ">
+        {randomThought}
       </div>
     </div>
   );
