@@ -47,7 +47,7 @@ const Register: React.FC = () => {
     setError(null);
 
     try {
-      const res = await fetch(`http://localhost:5173/api/register`, {
+      const res = await fetch(`http://localhost:8000/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
